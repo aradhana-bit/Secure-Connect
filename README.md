@@ -2,8 +2,6 @@
 
 A secure backend communication platform built with **Node.js, Express.js, MongoDB, JWT, and Socket.IO**, featuring user authentication, protected APIs, personal note management, and real-time messaging.
 
----
-
 ## Overview
 
 Secure-Connect is a backend application designed to provide secure user authentication, authorization, data management, and real-time communication.
@@ -12,7 +10,7 @@ The platform combines RESTful APIs with event-driven architecture to deliver sec
 
 ## Features
 
-- **User Authentication:** Secure registration and login.
+- **User Authentication:** Secure user registration and login.
 - **Password Security:** Password hashing using bcrypt.
 - **JWT Authentication:** Token-based authentication for protected routes.
 - **Role-Based Authorization:** Restricted access to administrative endpoints.
@@ -41,21 +39,16 @@ The platform combines RESTful APIs with event-driven architecture to deliver sec
 
 ```text
 Secure-Connect/
-│
 ├── config/
 │   └── db.js
-│
 ├── events/
 │   └── appEvents.js
-│
 ├── middleware/
 │   └── authMiddleware.js
-│
 ├── routes/
 │   ├── authRoutes.js
 │   └── noteRoutes.js
-│
-├── screenshots/
+├── screenshorts/
 │   ├── 01-notes-no-token.png
 │   ├── 02-signup.png
 │   ├── 03-login.png
@@ -63,7 +56,6 @@ Secure-Connect/
 │   ├── 05-get-all-notes.png
 │   ├── 06-chat-console.png
 │   └── 07-compass-users.png
-│
 ├── .env.example
 ├── .gitignore
 ├── package.json
@@ -76,33 +68,33 @@ Secure-Connect/
 
 ### Prerequisites
 
-Make sure you have the following installed:
-
 - [Node.js](https://nodejs.org/)
 - npm
-- [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) or a MongoDB server
+- [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) or a local MongoDB server
 - [Postman](https://www.postman.com/)
 - [Visual Studio Code](https://code.visualstudio.com/)
 
-### 1. Clone the Repository
+### Installation
+
+**1. Clone the repository**
 
 ```bash
 git clone https://github.com/aradhana-bit/Secure-Connect.git
 ```
 
-### 2. Navigate to the Project Directory
+**2. Navigate to the project directory**
 
 ```bash
 cd Secure-Connect
 ```
 
-### 3. Install Dependencies
+**3. Install dependencies**
 
 ```bash
 npm install
 ```
 
-### 4. Configure Environment Variables
+**4. Configure environment variables**
 
 Create a `.env` file in the root directory.
 
@@ -116,24 +108,15 @@ JWT_EXPIRES_IN=1h
 
 Replace the placeholder values with your actual configuration.
 
-### 5. Start the Server
+**5. Start the application**
 
 ```bash
 npm start
 ```
 
-Expected terminal output:
-
-```text
-MongoDB connected
-Server listening on http://localhost:5000
-```
-
 The application runs locally at:
 
 `http://localhost:5000`
-
----
 
 ## API Documentation
 
@@ -146,45 +129,14 @@ The application runs locally at:
 | POST | `/api/auth/signup` | Register a new user |
 | POST | `/api/auth/login` | Authenticate an existing user |
 
-#### User Registration
-
-**POST** `/api/auth/signup`
-
-Request Body:
-
-```json
-{
-  "username": "Aradhana",
-  "email": "aradhana.test@gmail.com",
-  "password": "Test123456"
-}
-```
-
-Expected response: `201 Created`
-
-#### User Login
-
-**POST** `/api/auth/login`
-
-Request Body:
-
-```json
-{
-  "email": "aradhana.test@gmail.com",
-  "password": "Test123456"
-}
-```
-
-Expected response: `200 OK`
-
-A JWT token is returned for authenticated requests.
-
 ### Protected Routes
 
 | Method | Endpoint | Description |
 |---|---|---|
 | GET | `/api/profile` | Retrieve authenticated user profile |
 | GET | `/api/admin` | Access the admin-protected endpoint |
+
+Protected endpoints require a valid JWT.
 
 **Authorization Header:**
 
@@ -201,7 +153,7 @@ Authorization: Bearer YOUR_JWT_TOKEN
 | PUT | `/api/notes/:id` | Update a note |
 | DELETE | `/api/notes/:id` | Delete a note |
 
-#### Create a Note
+### Example: Create a Note
 
 **POST** `/api/notes`
 
@@ -212,15 +164,7 @@ Authorization: Bearer YOUR_JWT_TOKEN
 }
 ```
 
-Expected response: `201 Created`
-
-#### Retrieve Notes
-
-**GET** `/api/notes`
-
-Expected response: `200 OK`
-
-#### Update a Note
+### Example: Update a Note
 
 **PUT** `/api/notes/NOTE_ID`
 
@@ -232,16 +176,6 @@ Expected response: `200 OK`
 ```
 
 Replace `NOTE_ID` with the actual note ID.
-
-#### Delete a Note
-
-**DELETE** `/api/notes/NOTE_ID`
-
-Expected response: `200 OK`
-
-All protected note endpoints require a valid JWT.
-
----
 
 ## Real-Time Communication
 
@@ -259,16 +193,12 @@ Secure-Connect integrates Socket.IO to enable real-time communication between co
 ### Communication Workflow
 
 1. Client establishes a Socket.IO connection.
-2. Server authenticates the connection using JWT.
+2. Server handles connection authentication.
 3. User joins a designated chat room.
 4. Messages are exchanged through Socket.IO events.
 5. Connected participants receive real-time messages.
 
----
-
 ## Database Architecture
-
-The application uses MongoDB for persistent data storage.
 
 **Database:** `secure_connect`
 
@@ -279,8 +209,6 @@ The application uses MongoDB for persistent data storage.
 
 ### Users Collection
 
-Stores user-related information:
-
 - Username
 - Email
 - Hashed password
@@ -289,61 +217,51 @@ Stores user-related information:
 
 ### Notes Collection
 
-Stores note-related information:
-
 - Note title
 - Note content
 - Associated user
 - Creation timestamp
 - Update timestamp
 
----
-
 ## Output Screenshots
 
-### 1. Authentication and Authorization
+### Authentication and Authorization
 
 **Unauthorized Notes Access**
 
-Demonstrates protected API access when a request is made without an authentication token.
-
-![Unauthorized Notes Access](screenshots/01-notes-no-token.png)
+![Unauthorized Notes Access](screenshorts/01-notes-no-token.png)
 
 **User Registration**
 
-![User Registration](screenshots/02-signup.png)
+![User Registration](screenshorts/02-signup.png)
 
 **User Login and JWT Authentication**
 
-![User Login](screenshots/03-login.png)
+![User Login](screenshorts/03-login.png)
 
-### 2. Notes Management
+### Notes Management
 
 **Create Note**
 
-![Create Note](screenshots/04-create-note.png)
+![Create Note](screenshorts/04-create-note.png)
 
 **Retrieve All Notes**
 
-![Get All Notes](screenshots/05-get-all-notes.png)
+![Get All Notes](screenshorts/05-get-all-notes.png)
 
-### 3. Real-Time Communication
+### Real-Time Communication
 
 **Socket.IO Chat Console**
 
-![Chat Console](screenshots/06-chat-console.png)
+![Chat Console](screenshorts/06-chat-console.png)
 
-### 4. Database Verification
+### Database Verification
 
 **MongoDB Compass – Users Collection**
 
-![MongoDB Compass](screenshots/07-compass-users.png)
-
----
+![MongoDB Compass](screenshorts/07-compass-users.png)
 
 ## Security
-
-Secure-Connect incorporates the following security mechanisms:
 
 - Password hashing using bcrypt.
 - JWT-based authentication.
@@ -363,8 +281,6 @@ Secure-Connect incorporates the following security mechanisms:
 - Message history and timestamps.
 - Enhanced request validation.
 - Automated testing and API documentation.
-
----
 
 ## Author
 
