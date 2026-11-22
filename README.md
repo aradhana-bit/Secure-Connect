@@ -1,39 +1,54 @@
-# Secure-Connect | Secure Communication Platform
+<h1 align="center">Secure-Connect</h1>
 
-A secure backend communication platform built with **Node.js, Express.js, MongoDB, JWT, and Socket.IO**, featuring user authentication, protected APIs, personal note management, and real-time messaging.
+<p align="center">
+  A Secure Communication Platform built with Node.js, Express.js, MongoDB, JWT Authentication, and Socket.IO.
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="Node.js" />
+  <img src="https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white" alt="Express.js" />
+  <img src="https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white" alt="MongoDB" />
+  <img src="https://img.shields.io/badge/Socket.IO-010101?style=for-the-badge&logo=socketdotio&logoColor=white" alt="Socket.IO" />
+  <img src="https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white" alt="JWT" />
+  <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript" />
+</p>
+
+---
 
 ## Overview
 
-Secure-Connect is a backend application designed to provide secure user authentication, authorization, data management, and real-time communication.
+**Secure-Connect** is a backend communication platform that demonstrates secure authentication, protected REST APIs, MongoDB-based data management, and real-time messaging.
 
-The platform combines RESTful APIs with event-driven architecture to deliver secure and reliable backend functionality.
+The application allows users to register and log in, access protected resources using JSON Web Tokens (JWT), manage their personal notes, and exchange messages through authenticated Socket.IO connections.
 
-## Features
+## Key Features
 
-- **User Authentication:** Secure user registration and login.
-- **Password Security:** Password hashing using bcrypt.
-- **JWT Authentication:** Token-based authentication for protected routes.
-- **Role-Based Authorization:** Restricted access to administrative endpoints.
-- **Notes Management:** Create, retrieve, update, and delete personal notes.
-- **Real-Time Messaging:** Communication using Socket.IO.
-- **Event-Driven Architecture:** Event handling using Node.js EventEmitter.
-- **Database Integration:** Persistent data storage using MongoDB.
+- **User Registration:** Create user accounts with username, email, and password.
+- **Secure Password Storage:** Hash passwords using bcrypt before storing them.
+- **JWT Authentication:** Generate and verify JSON Web Tokens for authenticated access.
+- **Role-Based Access:** Restrict administrative endpoints to users with the admin role.
+- **Protected User Profile:** Retrieve profile information using a valid access token.
+- **Personal Notes Management:** Create, view, update, and delete notes belonging to the authenticated user.
+- **Real-Time Communication:** Exchange messages through Socket.IO chat rooms.
+- **Socket Authentication:** Verify JWTs when clients establish Socket.IO connections.
+- **MongoDB Integration:** Store users and notes persistently in MongoDB.
+- **Event-Driven Programming:** Use Node.js EventEmitter to handle application events.
 
 ## Technology Stack
 
 | Technology | Purpose |
 |---|---|
-| Node.js | Backend runtime |
+| JavaScript | Application programming language |
+| Node.js | Server-side JavaScript runtime |
 | Express.js | REST API framework |
 | MongoDB | NoSQL database |
-| Mongoose | Database object modeling |
+| MongoDB Node.js Driver | Database connectivity and operations |
 | bcrypt | Password hashing |
-| JSON Web Token | Authentication |
-| dotenv | Environment configuration |
-| Socket.IO | Real-time communication |
-| EventEmitter | Event-driven programming |
+| JSON Web Token | Authentication and authorization |
+| Socket.IO | Real-time, bidirectional communication |
+| dotenv | Environment variable configuration |
 | Postman | API testing |
-| MongoDB Compass | Database management |
+| MongoDB Compass | Database inspection |
 
 ## Project Structure
 
@@ -56,7 +71,6 @@ Secure-Connect/
 │   ├── 05-get-all-notes.png
 │   ├── 06-chat-console.png
 │   └── 07-compass-users.png
-├── .env.example
 ├── .gitignore
 ├── package.json
 ├── package-lock.json
@@ -66,13 +80,17 @@ Secure-Connect/
 
 ## Getting Started
 
+Follow these steps to run Secure-Connect on your local machine.
+
 ### Prerequisites
 
+Make sure you have the following installed:
+
 - [Node.js](https://nodejs.org/)
-- npm
+- npm (included with Node.js)
 - [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) or a local MongoDB server
-- [Postman](https://www.postman.com/)
-- [Visual Studio Code](https://code.visualstudio.com/)
+- [Postman](https://www.postman.com/) for API testing (optional)
+- [MongoDB Compass](https://www.mongodb.com/products/tools/compass) for database inspection (optional)
 
 ### Installation
 
@@ -96,7 +114,7 @@ npm install
 
 **4. Configure environment variables**
 
-Create a `.env` file in the root directory.
+Create a `.env` file in the root directory and add the following configuration:
 
 ```env
 PORT=5000
@@ -106,106 +124,135 @@ JWT_SECRET=your_long_random_secret
 JWT_EXPIRES_IN=1h
 ```
 
-Replace the placeholder values with your actual configuration.
+Replace the placeholder values with your actual MongoDB connection string and a strong, private JWT secret. Do not commit your `.env` file to GitHub.
 
 **5. Start the application**
+
+For normal execution:
 
 ```bash
 npm start
 ```
 
-The application runs locally at:
+For development with Node.js watch mode:
 
-`http://localhost:5000`
+```bash
+npm run dev
+```
+
+Once the database connection is successful, the server starts at:
+
+```text
+http://localhost:5000
+```
 
 ## API Documentation
 
 **Base URL:** `http://localhost:5000`
 
-### Authentication
+### 1. Authentication Routes
 
 | Method | Endpoint | Description |
 |---|---|---|
 | POST | `/api/auth/signup` | Register a new user |
-| POST | `/api/auth/login` | Authenticate an existing user |
+| POST | `/api/auth/login` | Log in an existing user and receive a JWT |
 
-### Protected Routes
+**Signup request body**
+
+```json
+{
+  "username": "your_username",
+  "email": "user@example.com",
+  "password": "your_password"
+}
+```
+
+**Login request body**
+
+```json
+{
+  "email": "user@example.com",
+  "password": "your_password"
+}
+```
+
+### 2. Protected User Routes
 
 | Method | Endpoint | Description |
 |---|---|---|
-| GET | `/api/profile` | Retrieve authenticated user profile |
-| GET | `/api/admin` | Access the admin-protected endpoint |
+| GET | `/api/profile` | Retrieve the authenticated user's profile |
+| GET | `/api/admin` | Access the admin-only endpoint |
 
-Protected endpoints require a valid JWT.
-
-**Authorization Header:**
+These routes require a valid JWT in the request header.
 
 ```http
 Authorization: Bearer YOUR_JWT_TOKEN
 ```
 
-### Notes Management
+The admin endpoint returns access only when the authenticated user's role is `admin`.
+
+### 3. Notes Management Routes
+
+All notes endpoints require authentication. Users can access and manage only their own notes.
 
 | Method | Endpoint | Description |
 |---|---|---|
 | POST | `/api/notes` | Create a note |
-| GET | `/api/notes` | Retrieve user notes |
+| GET | `/api/notes` | Retrieve the authenticated user's notes |
 | PUT | `/api/notes/:id` | Update a note |
 | DELETE | `/api/notes/:id` | Delete a note |
 
-### Example: Create a Note
-
-**POST** `/api/notes`
+**Create a note**
 
 ```json
 {
   "title": "My First Note",
-  "content": "Testing Secure Connect Notes API"
+  "content": "Testing the Secure-Connect Notes API"
 }
 ```
 
-### Example: Update a Note
-
-**PUT** `/api/notes/NOTE_ID`
+**Update a note**
 
 ```json
 {
   "title": "Updated Note",
-  "content": "Note updated successfully"
+  "content": "The note has been updated"
 }
 ```
 
-Replace `NOTE_ID` with the actual note ID.
+Replace `:id` in the URL with the MongoDB ObjectId of the note. The update endpoint accepts a title, content, or both.
 
 ## Real-Time Communication
 
-Secure-Connect integrates Socket.IO to enable real-time communication between connected users.
+Secure-Connect uses **Socket.IO** to support real-time messaging between authenticated clients.
 
 ### Socket.IO Events
 
 | Event | Description |
 |---|---|
 | `connect` | Establishes a socket connection |
-| `join_room` | Joins a designated chat room |
-| `chat_message` | Handles real-time messages |
+| `join_room` | Joins a chat room |
+| `joined_room` | Confirms the room joined by the client |
+| `chat_message` | Sends and receives room messages |
 | `disconnect` | Handles socket disconnection |
 
 ### Communication Workflow
 
-1. Client establishes a Socket.IO connection.
-2. Server handles connection authentication.
-3. User joins a designated chat room.
-4. Messages are exchanged through Socket.IO events.
-5. Connected participants receive real-time messages.
+1. The client establishes a Socket.IO connection and supplies a JWT through the handshake authentication object.
+2. The server verifies the token before accepting the connection.
+3. The authenticated user joins a chat room using `join_room`.
+4. The client sends messages using `chat_message`.
+5. The server broadcasts the message to clients in the selected room.
+6. Application events are emitted for relevant activities, including chat messages.
 
-## Database Architecture
+## Database Structure
 
-**Database:** `secure_connect`
+The application uses MongoDB with the database name `secure_connect` by default.
 
 | Collection | Description |
 |---|---|
-| users | Stores registered user information |
-| notes | Stores user-created notes |
+| `users` | Stores registered user accounts |
+| `notes` | Stores notes associated with their owners |
 
 ### Users Collection
 
@@ -219,11 +266,15 @@ Secure-Connect integrates Socket.IO to enable real-time communication between co
 
 - Note title
 - Note content
-- Associated user
+- Owner reference
 - Creation timestamp
 - Update timestamp
 
+The application creates a unique index on user email and an index on the note owner field.
+
 ## Output Screenshots
+
+The repository includes screenshots demonstrating the application's functionality.
 
 ### Authentication and Authorization
 
@@ -235,7 +286,7 @@ Secure-Connect integrates Socket.IO to enable real-time communication between co
 
 ![User Registration](screenshorts/02-signup.png)
 
-**User Login and JWT Authentication**
+**User Login**
 
 ![User Login](screenshorts/03-login.png)
 
@@ -245,15 +296,15 @@ Secure-Connect integrates Socket.IO to enable real-time communication between co
 
 ![Create Note](screenshorts/04-create-note.png)
 
-**Retrieve All Notes**
+**Retrieve Notes**
 
-![Get All Notes](screenshorts/05-get-all-notes.png)
+![Retrieve Notes](screenshorts/05-get-all-notes.png)
 
 ### Real-Time Communication
 
 **Socket.IO Chat Console**
 
-![Chat Console](screenshorts/06-chat-console.png)
+![Socket.IO Chat Console](screenshorts/06-chat-console.png)
 
 ### Database Verification
 
@@ -261,33 +312,43 @@ Secure-Connect integrates Socket.IO to enable real-time communication between co
 
 ![MongoDB Compass](screenshorts/07-compass-users.png)
 
-## Security
+## Concepts Implemented
 
-- Password hashing using bcrypt.
-- JWT-based authentication.
-- Protected API routes.
-- Role-based authorization.
-- Environment-based secret management.
-- User-specific note access.
-- Authenticated Socket.IO connections.
+- RESTful API development
+- HTTP methods and status codes
+- User registration and login
+- Password hashing and verification
+- JWT-based authentication
+- Middleware-based route protection
+- Role-based authorization
+- MongoDB CRUD operations
+- User-specific data access
+- Real-time communication with Socket.IO
+- Socket connection authentication
+- Event-driven programming with EventEmitter
+- Environment variable management
 
-## Future Enhancements
+## Project Objectives
 
-- Interactive frontend application.
-- Private one-to-one messaging.
-- Improved chat room management.
-- User profile management.
-- Password recovery functionality.
-- Message history and timestamps.
-- Enhanced request validation.
-- Automated testing and API documentation.
+- Understand secure backend application development.
+- Implement authentication and authorization using JWT.
+- Work with MongoDB for persistent data storage.
+- Build protected REST API endpoints.
+- Implement real-time communication using Socket.IO.
+- Apply event-driven programming concepts in Node.js.
 
-## Author
+## Purpose
 
-**Aradhana**
-
-[GitHub Profile](https://github.com/aradhana-bit)
+Secure-Connect was developed as a practical backend project to explore secure communication, authentication mechanisms, database operations, and real-time application development using modern JavaScript technologies.
 
 ---
 
-**Secure-Connect** — Building secure connections through modern backend technologies.
+<p align="center">
+  <strong>Secure-Connect</strong><br/>
+  Building secure connections through modern backend technologies.
+</p>
+
+<p align="center">
+  Developed by <strong>Aradhana</strong><br/>
+  <a href="https://github.com/aradhana-bit">GitHub Profile</a>
+</p>
